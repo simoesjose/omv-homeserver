@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    network_mode: host
+    volumes:
+      # Mantém a configuração e estado persistentes
+      - /appdata/adguard/work:/opt/adguardhome/work
+      - /appdata/adguard/conf:/opt/adguardhome/conf
+    restart: unless-stopped
+    # Sem 'ports' em host networking; o container escuta diretamente no host.
