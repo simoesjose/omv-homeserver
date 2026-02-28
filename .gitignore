@@ -1,0 +1,11 @@
+# Secrets (não usar no repo)
+.env
+*.secrets.*
+**/secrets/**
+**/*.key
+**/*.pem
+
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
