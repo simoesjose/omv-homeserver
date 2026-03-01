@@ -1,34 +1,32 @@
 # Portainer
 
 ## Objetivo
-Gestão dos containers/stacks Docker via UI.
+Gestão de containers/stacks Docker via UI.
 
 ## Acesso
-- Instalado diretamente no OMV (sem compose no repo).
-- URL (LAN): https://192.168.1.200:9443
-- Portas (comportamento típico do Portainer CE):
-  - 9443/TCP (UI HTTPS) — **preferível**
-  - 9000/TCP (UI HTTP – legado, opcional)
-  - 8000/TCP (Edge – opcional)
+- URL (LAN): http://192.168.1.200:9000
+- URL (LAN – HTTPS): https://192.168.1.200:9443 *(certificado autoassinado por omissão)*
+- URL (Tailscale): http://100.80.202.44:9000 / https://100.80.202.44:9443
+- Portas:
+  - 9000/TCP (UI HTTP — em uso)
+  - 9443/TCP (UI HTTPS — ativo; podes carregar um certificado na UI)
+  - 8000/TCP (Edge/Tunnel — publicado)
 
 ## Docker
 - network mode: **bridge**
 - volumes:
-  - `/var/run/docker.sock:/var/run/docker.sock` (podes manter `:ro` se não usares Edge)
+  - `/var/run/docker.sock:/var/run/docker.sock`
   - `/appdata/portainer/data:/data`
 - notas:
-  - Se já usas 9443, **desnecessário expor 9000**.
-  - Faz backup regular de `/data`.
-
-## Compose
-- *N/A* (instalado via OMV/Portainer). Documentado apenas para referência.
+  - A 9443/HTTPS é o padrão do Portainer; 9000/HTTP é legado (mantido por compatibilidade).
+  - Faz backup de `/data` (agora em `/appdata/portainer/data`) para restauro simples.
 
 ## Operação
 - atualizar: Pull → Recreate
-- backup: `data/`
-- restore: repor `data/` com container parado
+- backup: `tar/rsync` à pasta `/appdata/portainer/data`
+- restore: parar container, repor `/appdata/portainer/data`, recriar container
 
 ## Troubleshooting
 - UI não abre:
-  - `ss -tulpn | grep -E ':9443|:9000'`
-  - Ver logs do container e conflitos de portas
+  - `ss -tulpn | grep -E ':9443|:9000|:8000'`
+  - `docker logs portainer --tail 200`

@@ -13,7 +13,9 @@ services:
       - /appdata/tailscale/state:/var/lib/tailscale
     environment:
       - TS_HOSTNAME=homeserver
-    # Forçamos tun do kernel (como fizemos via CLI)
+      # Se quiseres gateway da LAN:
+      # - TS_ROUTES=192.168.1.0/24
+      # - TS_EXTRA_ARGS=--accept-routes
     command: >
       tailscaled
       --state=/var/lib/tailscale/tailscaled.state

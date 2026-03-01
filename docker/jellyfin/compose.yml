@@ -4,16 +4,13 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     restart: unless-stopped
-    # Rede em bridge; expõe só a UI HTTP
     ports:
       - "8096:8096"
-      # - "8920:8920" # HTTPS (opcional, se fizeres reverse proxy/SSL)
-    # Mapeamentos persistentes + media em RW (para gravar legendas)
+      # - "8920:8920"  # HTTPS opcional
     volumes:
       - /appdata/jellyfin/config:/config
       - /appdata/jellyfin/cache:/cache
       - /mnt/desktop_media:/media:rw
-    # Opcional: define timezone se quiseres
     environment:
       - TZ=Europe/Lisbon
     networks:
