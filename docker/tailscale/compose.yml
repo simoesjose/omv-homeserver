@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   tailscale:
     image: tailscale/tailscale:stable
@@ -11,7 +10,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - /appdata/tailscale:/var/lib/tailscale
+      - /appdata/tailscale/state:/var/lib/tailscale
     environment:
       - TS_HOSTNAME=homeserver
     # Forçamos tun do kernel (como fizemos via CLI)
@@ -21,3 +20,8 @@ services:
       --socket=/run/tailscale/tailscaled.sock
       --tun=tailscale0
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   adguardhome:
     image: adguard/adguardhome:latest
@@ -10,4 +9,9 @@ services:
       - /appdata/adguard/work:/opt/adguardhome/work
       - /appdata/adguard/conf:/opt/adguardhome/conf
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     # Sem 'ports' em host networking; o container escuta diretamente no host.
